@@ -15,25 +15,31 @@ func main() {
 
 	rand.Seed(time.Now().UnixNano())
 
-	// +++++++ Test linear insertion sort for integers +++++++
-	sortTestForInt()
+	//
+	// Test linear insertion sort for integers
+	//
+	// sortTestForInt()
 
-	// +++++++ Test strings linear insertion sort +++++++
-	sortTestForStr()
+	//
+	// Test linear insertion sort for strings
+	//
+	// sortTestForStr()
 
-	// +++++++ Test rational numbers linear insertion sort +++++++
-	sortTestForRationals()
+	//
+	// Test linear insertion sort for my rational type
+	//
+	// sortTestForRationals()
 
-	howGoExpressTime()
+	// howGoExpressTime()
 
 	fmt.Print("\n\n/* -------- Test Finish -------- */\n")
 }
 
 func testRationalType() {
 	// 		1. Test constructor
-	myR1 := NewRational(11, 25)
-	myR2 := NewRational(13, 25)
-	// wrongR := NewRational(1, 0)
+	myR1 := makeRational(11, 25)
+	myR2 := makeRational(13, 25)
+	// wrongR := makeRational(1, 0)
 
 	// 		2. Test Numerator()
 	fmt.Printf("\nThe numerator of %s is %d", myR1, myR1.Numerator())
@@ -56,9 +62,9 @@ func testRationalType() {
 	fmt.Printf("\nDoes %s equal to %s: %t", myR1, myR2, myR1.Equal(myR2))
 
 	// 		8. Test LessThan(other Rationalizer)
-	r1 := NewRational(1, 3)
-	r2 := NewRational(2, 3)
-	r3 := NewRational(6, 3)
+	r1 := makeRational(1, 3)
+	r2 := makeRational(2, 3)
+	r3 := makeRational(6, 3)
 	fmt.Printf("\nIs %s less than %s: %t", r1, r2, r1.LessThan(r2))
 	fmt.Printf("\nIs %s less than %s: %t", r2, r1, r2.LessThan(r1))
 
@@ -86,136 +92,164 @@ func testRationalType() {
 
 func sortTestForInt() {
 	size := 0
+
+	//
+	// loop size from 1k, 2k, ... 9k, 10k
+	//
 	for size < 10000 {
 		size += 1000
-		var sortTimeTotal int
+		sortTimeTotal := float64(0)
+
+		//
+		// loop 3 times to get an average sort time
+		//
 		for i := 0; i < 3; i++ {
 			arr := make([]int, size)
-			// fmt.Print("\n\n---- Before Sort ----\n")
+
 			for i := range arr {
-				randNum := rand.Intn(size)
-				arr[i] = randNum
-				// fmt.Printf("%d ", randNum)
+				arr[i] = rand.Intn(size)
 			}
 
 			start := time.Now()
 			numsSort(arr)
 			elapsed := time.Since(start)
-			sortTimeTotal += int(elapsed)
-			fmt.Printf("\n(Iter %d) Sort the %d integers took %s.\n", i, size, elapsed)
 
-			// fmt.Print("\n\n---- After Sort ----\n")
-			// for _, n := range arr {
-			// 	fmt.Printf("%d ", n)
-			// }
+			sortTimeTotal += float64(elapsed)
+
+			// fmt.Printf("\n(Iter %d) Sort the %d integers took %s.\n", i+1, size, elapsed)
 		}
 
-		fmt.Printf("\nThe average time for sorting the %d integers took %d.\n", size, sortTimeTotal/3)
+		// get average sort time in nanoseconds and convert it to microseconds
+		ave := (sortTimeTotal / 3.0) / 1000.0
+
+		fmt.Printf("\nThe average time (in microseconds or µs) for sorting the %d integers took %0.6f\n", size, ave)
 	}
 }
 
 func sortTestForStr() {
-	// min := 33
-	// max := 125
-	// randNum := randNumBetween(min, max)
-
 	size := 0
+
+	//
+	// loop size from 1k, 2k, ... 9k, 10k
+	//
 	for size < 10000 {
 		size += 1000
-		strArr := make([]string, size)
+		sortTimeTotal := float64(0)
 
-		// fmt.Print("\n\n---- Before Sort ----\n")
+		//
+		// loop 3 times to get an average sort time
+		//
+		for i := 0; i < 3; i++ {
+			strArr := make([]string, size)
 
-		for i := range strArr {
-			strLen := rand.Intn(5) + 4
-			strArr[i] = randStringBytes(strLen)
-			// fmt.Printf("%s ", strArr[i])
+			for i := range strArr {
+				strLen := rand.Intn(5) + 4
+				strArr[i] = randStringBytes(strLen)
+			}
+
+			start := time.Now()
+			strsSort(strArr)
+			elapsed := time.Since(start)
+
+			sortTimeTotal += float64(elapsed)
+
+			// fmt.Printf("\n(Iter %d) Sort the %d strings took %s\n", i+1, size, elapsed)
 		}
 
-		start := time.Now()
-		strsSort(strArr)
-		elapsed := time.Since(start)
-		fmt.Printf("\nSort the %d strings took %s\n", size, elapsed)
+		ave := (sortTimeTotal / 3.0) / 1000.0
 
-		// fmt.Print("\n\n---- After Sort ----\n")
-		// for _, s := range strArr {
-		// 	fmt.Printf("%s ", s)
-		// }
+		fmt.Printf("\nThe average time (in microseconds or µs) for sorting the %d strings took %0.6f\n", size, ave)
 	}
 
-	// strArr := []string{"hl", "zg", "he", "ac", "ab", "23", "He", "111"}
-	// fmt.Print("\n\n---- Before Sort ----\n")
-	// for _, s := range strArr {
-	// 	// strArr[i] = i
-	// 	fmt.Print(s)
-	// }
-	// strsSort(strArr)
+	// testStrSortCorrectness()
 
-	// fmt.Print("\n\n---- After Sort ----\n")
-	// for _, s := range strArr {
-	// 	fmt.Print(s)
-	// }
 }
 
 func sortTestForRationals() {
 	size := 0
+
+	//
+	// loop size from 1k, 2k, ... 9k, 10k
+	//
 	for size < 10000 {
 		size += 1000
-		rArr := make([]Rationalizer, size)
+		sortTimeTotal := float64(0)
 
-		// fmt.Print("\n\n---- Before Sort ----\n")
+		//
+		// loop 3 times to get an average sort time
+		//
+		for i := 0; i < 3; i++ {
+			rArr := make([]Rationalizer, size)
 
-		for i := range rArr {
-			rArr[i] = NewRational(rand.Intn(10), rand.Intn(10)+1)
-			// fmt.Print(rArr[i])
-			// fmt.Print(" ")
+			for i := range rArr {
+				rArr[i] = makeRational(rand.Intn(10), rand.Intn(10)+1)
+			}
+
+			start := time.Now()
+			rationalSort(rArr)
+			elapsed := time.Since(start)
+
+			sortTimeTotal += float64(elapsed)
+
+			fmt.Printf("\n(Iter %d) Sort the %d rational numbers took %s\n", i+1, size, elapsed)
 		}
 
-		start := time.Now()
-		rationalSort(rArr)
-		elapsed := time.Since(start)
-		fmt.Printf("\nSort the %d rational numbers took %s\n", size, elapsed)
+		ave := (sortTimeTotal / 3.0) / 1000.0
 
-		// fmt.Print("\n\n---- After Sort ----\n")
-		// for _, r := range rArr {
-		// 	fmt.Print(r)
-		// 	fmt.Print(" ")
-		// }
+		fmt.Printf("\nThe average time (in microseconds or µs) for sorting the %d rational numbers took %0.6f\n", size, ave)
 	}
 
-	// rArr := make([]Rationalizer, 5)
-	// fmt.Print("\n\n---- Before Sort ----\n")
-	// for i := range rArr {
-	// 	rArr[i] = NewRational(rand.Intn(5), rand.Intn(5)+1)
-	// 	fmt.Print(rArr[i])
-	// 	fmt.Print(" ")
-	// }
-	// rationalSort(rArr)
+	// testRaionalSortCorrectness()
+}
 
-	// fmt.Print("\n\n---- After Sort ----\n")
-	// for _, r := range rArr {
-	// 	fmt.Print(r)
-	// 	fmt.Print(" ")
-	// }
+func testStrSortCorrectness() {
+	strArr := []string{"hl", "zg", "he", "ac", "ab", "23", "He", "111"}
+	fmt.Print("\n\n---- Before Sort ----\n")
+	for _, s := range strArr {
+		fmt.Print(s)
+	}
+	strsSort(strArr)
 
-	// rArr := make([]Rationalizer, 5)
-	// r1 := NewRational(14, 5)
-	// r2 := NewRational(11, 4)
-	// rArr[0] = r1
-	// rArr[1] = r2
-	// fmt.Print("\n\n---- Before Sort ----\n")
-	// for i := 2; i < len(rArr); i++ {
-	// 	rArr[i] = NewRational(rand.Intn(5)+10, rand.Intn(5)+1)
-	// 	fmt.Print(rArr[i])
-	// 	fmt.Print(" ")
-	// }
-	// rationalSort(rArr)
+	fmt.Print("\n\n---- After Sort ----\n")
+	for _, s := range strArr {
+		fmt.Print(s)
+	}
+}
 
-	// fmt.Print("\n\n---- After Sort ----\n")
-	// for _, r := range rArr {
-	// 	fmt.Print(r)
-	// 	fmt.Print(" ")
-	// }
+func testRaionalSortCorrectness() {
+	rArr1 := make([]Rationalizer, 5)
+	fmt.Print("\n\n---- Before Sort ----\n")
+	for i := range rArr1 {
+		rArr1[i] = makeRational(rand.Intn(5), rand.Intn(5)+1)
+		fmt.Print(rArr1[i])
+		fmt.Print(" ")
+	}
+	rationalSort(rArr1)
+
+	fmt.Print("\n\n---- After Sort ----\n")
+	for _, r := range rArr1 {
+		fmt.Print(r)
+		fmt.Print(" ")
+	}
+
+	rArr2 := make([]Rationalizer, 5)
+	r1 := makeRational(14, 5)
+	r2 := makeRational(11, 4)
+	rArr2[0] = r1
+	rArr2[1] = r2
+	fmt.Print("\n\n---- Before Sort ----\n")
+	for i := 2; i < len(rArr2); i++ {
+		rArr2[i] = makeRational(rand.Intn(5)+10, rand.Intn(5)+1)
+		fmt.Print(rArr2[i])
+		fmt.Print(" ")
+	}
+	rationalSort(rArr2)
+
+	fmt.Print("\n\n---- After Sort ----\n")
+	for _, r := range rArr2 {
+		fmt.Print(r)
+		fmt.Print(" ")
+	}
 }
 
 func howGoExpressTime() {
