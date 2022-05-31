@@ -9,25 +9,19 @@ import (
 func main() {
 	/* ------------ Part 1 Rational type ------------ */
 
-	testRationalType()
+	// testRationalType()
+	testHarmonicSum()
 
 	/* ------------ Part 2 Sort ------------ */
 
 	rand.Seed(time.Now().UnixNano())
 
-	//
-	// Test linear insertion sort for integers
-	//
 	// sortTestForInt()
 
-	//
-	// Test linear insertion sort for strings
-	//
+	// testStrSortCorrectness()
 	// sortTestForStr()
 
-	//
-	// Test linear insertion sort for my rational type
-	//
+	// testRaionalSortCorrectness()
 	// sortTestForRationals()
 
 	// howGoExpressTime()
@@ -38,7 +32,7 @@ func main() {
 func testRationalType() {
 	// 		1. Test constructor
 	myR1 := makeRational(11, 25)
-	myR2 := makeRational(13, 25)
+	myR2 := makeRational(-13, 25)
 	// wrongR := makeRational(1, 0)
 
 	// 		2. Test Numerator()
@@ -55,7 +49,8 @@ func testRationalType() {
 	fmt.Print(myR1)
 
 	// 		6. Test toFloat64()
-	fmt.Printf("\nThe float of %s is %0.50f", myR1, myR1.toFloat64())
+	fmt.Printf("\nThe float of %s is %0.6f", myR1, myR1.toFloat64())
+	fmt.Printf("\nThe float of %s is %0.6f", myR2, myR2.toFloat64())
 
 	// 		7. Test Equal(other Rationalizer)
 	fmt.Printf("\nDoes %s equal to %s: %t", myR1, myR1, myR1.Equal(myR1))
@@ -63,8 +58,11 @@ func testRationalType() {
 
 	// 		8. Test LessThan(other Rationalizer)
 	r1 := makeRational(1, 3)
-	r2 := makeRational(2, 3)
+	r2 := makeRational(2, -3)
 	r3 := makeRational(6, 3)
+	r4 := makeRational(-1, 3)
+	r5 := makeRational(2, 3)
+	r6 := makeRational(-2, 3)
 	fmt.Printf("\nIs %s less than %s: %t", r1, r2, r1.LessThan(r2))
 	fmt.Printf("\nIs %s less than %s: %t", r2, r1, r2.LessThan(r1))
 
@@ -74,9 +72,14 @@ func testRationalType() {
 
 	// 		10. Test Add(other Rationalizer)
 	fmt.Printf("\nThe sum of %s and %s: %s", r1, r2, r1.Add(r2))
+	fmt.Printf("\nThe sum of %s and %s: %s", r2, r4, r2.Add(r4))
+	fmt.Printf("\nThe sum of %s and %s: %s", r1, r4, r1.Add(r4))
+	fmt.Printf("\nThe sum of %s and %s: %s", r4, r5, r4.Add(r5))
 
 	// 		11. Test Multiply(other Rationalizer)
 	fmt.Printf("\nThe product of %s and %s: %s", r1, r2, r1.Multiply(r2))
+	fmt.Printf("\nThe product of %s and %s: %s", r2, r4, r2.Multiply(r4))
+	fmt.Printf("\nThe product of %s and %s: %s", r4, r6, r4.Multiply(r6))
 
 	// 		12. Test Divide(other Rationalizer)
 	q, err1 := r1.Divide(r2)
@@ -88,6 +91,10 @@ func testRationalType() {
 
 	// 		14. Test ToLowestTerms()
 	fmt.Printf("\nThe lowest term of %s: %s", r3, r3.ToLowestTerms())
+}
+
+func testHarmonicSum() {
+	fmt.Print(harmonicSum(6))
 }
 
 func sortTestForInt() {
@@ -160,9 +167,6 @@ func sortTestForStr() {
 
 		fmt.Printf("\nThe average time (in microseconds or µs) for sorting the %d strings took %0.6f\n", size, ave)
 	}
-
-	// testStrSortCorrectness()
-
 }
 
 func sortTestForRationals() {
@@ -182,7 +186,7 @@ func sortTestForRationals() {
 			rArr := make([]Rationalizer, size)
 
 			for i := range rArr {
-				rArr[i] = makeRational(rand.Intn(10), rand.Intn(10)+1)
+				rArr[i] = makeRational(rand.Intn(size), rand.Intn(size)+1)
 			}
 
 			start := time.Now()
@@ -191,15 +195,13 @@ func sortTestForRationals() {
 
 			sortTimeTotal += float64(elapsed)
 
-			fmt.Printf("\n(Iter %d) Sort the %d rational numbers took %s\n", i+1, size, elapsed)
+			// fmt.Printf("\n(Iter %d) Sort the %d rational numbers took %s\n", i+1, size, elapsed)
 		}
 
 		ave := (sortTimeTotal / 3.0) / 1000.0
 
 		fmt.Printf("\nThe average time (in microseconds or µs) for sorting the %d rational numbers took %0.6f\n", size, ave)
 	}
-
-	// testRaionalSortCorrectness()
 }
 
 func testStrSortCorrectness() {
@@ -223,6 +225,8 @@ func testRaionalSortCorrectness() {
 		rArr1[i] = makeRational(rand.Intn(5), rand.Intn(5)+1)
 		fmt.Print(rArr1[i])
 		fmt.Print(" ")
+		// fmt.Print(rArr1[i].toFloat64())
+		// fmt.Print(" ")
 	}
 	rationalSort(rArr1)
 
@@ -230,6 +234,8 @@ func testRaionalSortCorrectness() {
 	for _, r := range rArr1 {
 		fmt.Print(r)
 		fmt.Print(" ")
+		// fmt.Print(r.toFloat64())
+		// fmt.Print(" ")
 	}
 
 	rArr2 := make([]Rationalizer, 5)
@@ -242,6 +248,8 @@ func testRaionalSortCorrectness() {
 		rArr2[i] = makeRational(rand.Intn(5)+10, rand.Intn(5)+1)
 		fmt.Print(rArr2[i])
 		fmt.Print(" ")
+		// fmt.Print(rArr2[i].toFloat64())
+		// fmt.Print(" ")
 	}
 	rationalSort(rArr2)
 
@@ -249,6 +257,8 @@ func testRaionalSortCorrectness() {
 	for _, r := range rArr2 {
 		fmt.Print(r)
 		fmt.Print(" ")
+		// fmt.Print(r.toFloat64())
+		// fmt.Print(" ")
 	}
 }
 

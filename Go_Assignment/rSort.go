@@ -35,11 +35,8 @@ func strsSort(strs []string) {
 func rationalSort(rs []Rationalizer) {
 	for i := range rs {
 		if i > 0 {
-			for preI := i; preI > 0; preI-- {
-				if rs[preI].LessThan(rs[preI-1]) {
-					// if rs[preI].toFloat64() < rs[preI-1].toFloat64() {
-					rs[preI], rs[preI-1] = rs[preI-1], rs[preI]
-				}
+			for preI := i; preI > 0 && rs[preI].LessThan(rs[preI-1]); preI-- {
+				rs[preI], rs[preI-1] = rs[preI-1], rs[preI]
 			}
 		}
 	}

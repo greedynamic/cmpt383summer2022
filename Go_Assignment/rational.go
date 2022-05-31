@@ -37,7 +37,9 @@ func (r Rational) String() string {
 }
 
 func (r Rational) toFloat64() float64 {
-	return float64(r.numerator / r.denominator)
+	floatNume := float64(r.numerator)
+	floatDeno := float64(r.denominator)
+	return floatNume / floatDeno
 }
 
 func (r Rational) Equal(other Rationalizer) bool {
@@ -54,22 +56,7 @@ func (r Rational) LessThan(other Rationalizer) bool {
 		return false
 	}
 
-	prodA := r.numerator * other.Denominator()
-	prodB := other.Numerator() * r.denominator
-
-	numeratorA := math.Abs(float64(prodA))
-	numeratorB := math.Abs(float64(prodB))
-
-	if isNegative(r) && isNegative(other) {
-		return numeratorA > numeratorB
-	} else if !isNegative(r) && !isNegative(other) {
-		// fmt.Printf("\nis less than: %t", numeratorA < numeratorB)
-		return numeratorA < numeratorB
-	} else if isNegative(r) && !isNegative(other) {
-		return true
-	} else {
-		return false
-	}
+	return r.toFloat64() < other.toFloat64()
 }
 
 func isNegative(r Rationalizer) bool {
@@ -82,21 +69,28 @@ func (r Rational) IsInt() bool {
 }
 
 func (r Rational) Add(other Rationalizer) Rationalizer {
-	denoProd := r.denominator * other.Denominator()
+	rDeno := math.Abs(float64(r.denominator))
+	rNume := math.Abs(float64(r.numerator))
+	otherDeno := math.Abs(float64(other.Denominator()))
+	otherNume := math.Abs(float64(other.Numerator()))
+	denoProd := rDeno * otherDeno
 
-	numeratorR := r.numerator * other.Denominator()
-	numeratorOther := other.Numerator() * r.denominator
+	numeratorR := rNume * otherDeno
+	numeratorOther := otherNume * rDeno
 
-	if bothNegative(r, other) || bothPositive(r, other) {
+	if bothPositive(r, other) {
 		nSum := numeratorR + numeratorOther
-		return makeRational(nSum, denoProd)
+		return makeRational(int(nSum), int(denoProd))
+	} else if bothNegative(r, other) {
+		nSum := numeratorR + numeratorOther
+		return makeRational(int(-1*nSum), int(denoProd))
 	} else {
 		if isNegative(other) {
 			nSum := numeratorR - numeratorOther
-			return makeRational(nSum, denoProd)
+			return makeRational(int(nSum), int(denoProd))
 		} else {
 			nSum := numeratorOther - numeratorR
-			return makeRational(nSum, denoProd)
+			return makeRational(int(nSum), int(denoProd))
 		}
 	}
 }
@@ -172,6 +166,45 @@ func getGCB(dividend, divisor int) int {
 //
 // 15. Harmonic sum
 //
-func harmonicSum() {
+func harmonicSum(n int) Rationalizer {
+	if n == 1 {
+		return makeRational(1, 1)
+	}
+	resultD := factorialCal(1, n)
+	resultN := 0
+	for i := 1; i <= n; i++ {
+		resultN += resultD / i
+	}
+	return makeRational(resultN, resultD)
+}
+
+func factorialCal(beg, end int) int {
+	if beg == end {
+		return beg
+	}
+	mid := (beg + end) / 2
+	return factorialCal(beg, mid) * factorialCal(mid+1, end)
 
 }
+
+//
+//  big int version harmonicSum, the problem is what to return?
+//  return big.Int will not fit for int
+//
+/*
+func harmonicSum(n int) Rationalizer {
+	if n == 1 {
+		return makeRational(1, 1)
+	}
+	var resultD big.Int
+	bigN := *big.NewInt(int64(n))
+	resultD = factorialCal(*big.NewInt(1), bigN)
+	resultN := *big.NewInt(1)
+	for i := 1; i <= n; i++ {
+		bigI := *big.NewInt(int64(i))
+		curNume := new(big.Int).Div(&resultN, &bigI)
+		resultN = *new(big.Int).Add(&resultN, curNume)
+	}
+	return makeRational(resultN, resultD)
+}
+*/
