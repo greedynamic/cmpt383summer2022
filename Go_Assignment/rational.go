@@ -10,7 +10,7 @@ type Rational struct {
 	numerator, denominator int
 }
 
-func NewRational(n int, d int) Rational {
+func makeRational(n int, d int) Rational {
 	if d == 0 {
 		err := errors.New("Denominator can not be zero.")
 		fmt.Print(err)
@@ -89,14 +89,14 @@ func (r Rational) Add(other Rationalizer) Rationalizer {
 
 	if bothNegative(r, other) || bothPositive(r, other) {
 		nSum := numeratorR + numeratorOther
-		return NewRational(nSum, denoProd)
+		return makeRational(nSum, denoProd)
 	} else {
 		if isNegative(other) {
 			nSum := numeratorR - numeratorOther
-			return NewRational(nSum, denoProd)
+			return makeRational(nSum, denoProd)
 		} else {
 			nSum := numeratorOther - numeratorR
-			return NewRational(nSum, denoProd)
+			return makeRational(nSum, denoProd)
 		}
 	}
 }
@@ -112,7 +112,7 @@ func bothPositive(r1 Rationalizer, r2 Rationalizer) bool {
 func (r Rational) Multiply(other Rationalizer) Rationalizer {
 	dProd := r.denominator * other.Denominator()
 	nProd := r.numerator * other.Numerator()
-	return NewRational(nProd, dProd)
+	return makeRational(nProd, dProd)
 }
 
 // 12. Returns the quotient of this value with other. The error is nil
@@ -131,7 +131,7 @@ func (r Rational) Divide(other Rationalizer) (Rationalizer, error) {
 // and non-nil if it cannot be inverted.
 func (r Rational) Invert() (Rationalizer, error) {
 	if r.numerator != 0 {
-		return NewRational(r.denominator, r.numerator), nil
+		return makeRational(r.denominator, r.numerator), nil
 	}
 	err := errors.New("There's no inverse for this number.")
 
@@ -141,20 +141,20 @@ func (r Rational) Invert() (Rationalizer, error) {
 // 14. Returns an equal value in lowest terms.
 func (r Rational) ToLowestTerms() Rationalizer {
 	if r.IsInt() {
-		return NewRational(r.numerator/r.denominator, 1)
+		return makeRational(r.numerator/r.denominator, 1)
 	} else if r.numerator == 0 {
 		return r
 	} else if r.denominator%r.numerator == 0 {
-		return NewRational(1, r.denominator/r.numerator)
+		return makeRational(1, r.denominator/r.numerator)
 	}
 
 	// larger number / smaller number
 	if r.numerator > r.denominator {
 		g := getGCB(r.numerator, r.denominator)
-		return NewRational(r.numerator/g, r.denominator/g)
+		return makeRational(r.numerator/g, r.denominator/g)
 	} else {
 		g := getGCB(r.denominator, r.numerator)
-		return NewRational(r.numerator/g, r.denominator/g)
+		return makeRational(r.numerator/g, r.denominator/g)
 	}
 }
 
@@ -167,4 +167,11 @@ func getGCB(dividend, divisor int) int {
 		q1 = curr_q2
 	}
 	return q2
+}
+
+//
+// 15. Harmonic sum
+//
+func harmonicSum() {
+
 }
