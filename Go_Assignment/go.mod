@@ -1,0 +1,3 @@
+module CMPT383SUMMER2022
+
+go 1.18

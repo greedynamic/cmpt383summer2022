@@ -167,7 +167,10 @@ func getGCB(dividend, divisor int) int {
 // 15. Harmonic sum
 //
 func harmonicSum(n int) Rationalizer {
-	if n == 1 {
+	if n < 0 {
+		fmt.Print("Invalid input.")
+		return nil
+	} else if n <= 1 {
 		return makeRational(1, 1)
 	}
 	resultD := factorialCal(1, n)
