@@ -26,14 +26,14 @@ import "fmt"
 // the name of an interface to end with "er".
 //
 type Shaper interface {
-    area() float64
-    perimeter() float64
+	area() float64
+	perimeter() float64
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 type Rectangle struct {
-    width, height float64
+	width, height float64
 }
 
 //
@@ -48,11 +48,11 @@ type Rectangle struct {
 // that all the methods implemented.
 //
 func (r Rectangle) area() float64 {
-    return r.width * r.height
+	return r.width * r.height
 }
 
 func (r Rectangle) perimeter() float64 {
-    return 2*r.width + 2*r.height
+	return 2*r.width + 2*r.height
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,22 +62,22 @@ func (r Rectangle) perimeter() float64 {
 //
 
 type Circle struct {
-    radius float64
+	radius float64
 }
 
 func (c Circle) area() float64 {
-    return 3.14 * c.radius * c.radius
+	return 3.14 * c.radius * c.radius
 }
 
 func (c Circle) perimeter() float64 {
-    return 2 * 3.14 * c.radius
+	return 2 * 3.14 * c.radius
 }
 
 //
 // diameter is specific to circle, and is not part of the Shaper interface.
 //
 func (c Circle) diameter() float64 {
-    return 2 * c.radius
+	return 2 * c.radius
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -86,14 +86,14 @@ func (c Circle) diameter() float64 {
 // getName uses a type switch to check the type of the underlying type of s.
 //
 func getName(s Shaper) string {
-    switch s.(type) { // type switch
-    case Rectangle: 
-        return "Rectangle"
-    case Circle:
-        return "Circle"
-    default:
-        return "unknown type"
-    }
+	switch s.(type) { // type switch
+	case Rectangle:
+		return "Rectangle"
+	case Circle:
+		return "Circle"
+	default:
+		return "unknown type"
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -104,15 +104,15 @@ func getName(s Shaper) string {
 // Shaper.
 //
 func printShapeStats(s Shaper) {
-    fmt.Printf("     %v area: %v\n", getName(s), s.area())
-    fmt.Printf("%v perimeter: %v\n\n", getName(s), s.perimeter())
+	fmt.Printf("     %v area: %v\n", getName(s), s.area())
+	fmt.Printf("%v perimeter: %v\n\n", getName(s), s.perimeter())
 }
 
 func main() {
-    box := Rectangle{width: 4, height: 1}
-    dot := Circle{3}
-    shapes := []Shaper{box, dot}
-    for _, s := range shapes {
-        printShapeStats(s)
-    }
+	box := Rectangle{width: 4, height: 1}
+	dot := Circle{3}
+	shapes := []Shaper{box, dot}
+	for _, s := range shapes {
+		printShapeStats(s)
+	}
 }
