@@ -1,43 +1,40 @@
 package main
 
-// import (
-// 	"math"
-// )
-
-func numsSort(nums []int) {
-	for i := range nums {
+func numsSort(nums []int) []int {
+	result := make([]int, len(nums))
+	copy(result, nums)
+	for i := range result {
 		if i > 0 {
-			for preI := i; preI > 0; preI-- {
-				if nums[preI] < nums[preI-1] {
-					// swap
-					// temp := int(nums[preI])
-					// nums[preI] = nums[preI-1]
-					// nums[preI-1] = temp
-					nums[preI], nums[preI-1] = nums[preI-1], nums[preI]
-				}
+			for preI := i; preI > 0 && result[preI] < result[preI-1]; preI-- {
+				result[preI], result[preI-1] = result[preI-1], result[preI]
 			}
 		}
 	}
+	return result
 }
 
-func strsSort(strs []string) {
-	for i := range strs {
+func strsSort(strs []string) []string {
+	result := make([]string, len(strs))
+	copy(result, strs)
+	for i := range result {
 		if i > 0 {
-			for preI := i; preI > 0; preI-- {
-				if strs[preI] < strs[preI-1] {
-					strs[preI], strs[preI-1] = strs[preI-1], strs[preI]
-				}
+			for preI := i; preI > 0 && result[preI] < result[preI-1]; preI-- {
+				result[preI], result[preI-1] = result[preI-1], result[preI]
 			}
 		}
 	}
+	return result
 }
 
-func rationalSort(rs []Rationalizer) {
+func rationalSort(rs []Rationalizer) []Rationalizer {
+	result := make([]Rationalizer, len(rs))
+	copy(result, rs)
 	for i := range rs {
 		if i > 0 {
-			for preI := i; preI > 0 && rs[preI].LessThan(rs[preI-1]); preI-- {
-				rs[preI], rs[preI-1] = rs[preI-1], rs[preI]
+			for preI := i; preI > 0 && result[preI].LessThan(result[preI-1]); preI-- {
+				result[preI], result[preI-1] = result[preI-1], result[preI]
 			}
 		}
 	}
+	return result
 }

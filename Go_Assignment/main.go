@@ -10,7 +10,7 @@ func main() {
 	/* ------------ Part 1 Rational type ------------ */
 
 	// testRationalType()
-	testHarmonicSum()
+	// testHarmonicSum()
 
 	/* ------------ Part 2 Sort ------------ */
 
@@ -33,7 +33,18 @@ func testRationalType() {
 	// 		1. Test constructor
 	myR1 := makeRational(11, 25)
 	myR2 := makeRational(-13, 25)
-	// wrongR := makeRational(1, 0)
+	fmt.Print(makeRational(1, 0))
+
+	r1 := makeRational(1, 3)
+	r2 := makeRational(2, -3)
+	r3 := makeRational(6, 3)
+	r4 := makeRational(-1, 3)
+	r5 := makeRational(2, 3)
+	r6 := makeRational(-2, 3)
+	r7 := makeRational(2, 3)
+	r8 := makeRational(4, 6)
+	r9 := makeRational(3, 5)
+	r10 := makeRational(9, 15)
 
 	// 		2. Test Numerator()
 	fmt.Printf("\nThe numerator of %s is %d", myR1, myR1.Numerator())
@@ -55,16 +66,13 @@ func testRationalType() {
 	// 		7. Test Equal(other Rationalizer)
 	fmt.Printf("\nDoes %s equal to %s: %t", myR1, myR1, myR1.Equal(myR1))
 	fmt.Printf("\nDoes %s equal to %s: %t", myR1, myR2, myR1.Equal(myR2))
+	fmt.Printf("\nDoes %s equal to %s: %t", r7, r8, r7.Equal(r8))
 
 	// 		8. Test LessThan(other Rationalizer)
-	r1 := makeRational(1, 3)
-	r2 := makeRational(2, -3)
-	r3 := makeRational(6, 3)
-	r4 := makeRational(-1, 3)
-	r5 := makeRational(2, 3)
-	r6 := makeRational(-2, 3)
 	fmt.Printf("\nIs %s less than %s: %t", r1, r2, r1.LessThan(r2))
 	fmt.Printf("\nIs %s less than %s: %t", r2, r1, r2.LessThan(r1))
+	fmt.Printf("\nIs %s less than %s: %t", r7, r8, r7.LessThan(r8))
+	fmt.Printf("\nIs %s less than %s: %t", r9, r10, r9.LessThan(r10))
 
 	// 		9. Test IsInt()
 	fmt.Printf("\nIs %s an integer: %t", r1, r1.IsInt())
@@ -118,11 +126,12 @@ func sortTestForInt() {
 			}
 
 			start := time.Now()
-			numsSort(arr)
+			res := numsSort(arr)
 			elapsed := time.Since(start)
 
 			sortTimeTotal += float64(elapsed)
 
+			fmt.Print(len(res))
 			// fmt.Printf("\n(Iter %d) Sort the %d integers took %s.\n", i+1, size, elapsed)
 		}
 
@@ -155,11 +164,12 @@ func sortTestForStr() {
 			}
 
 			start := time.Now()
-			strsSort(strArr)
+			res := strsSort(strArr)
 			elapsed := time.Since(start)
 
 			sortTimeTotal += float64(elapsed)
 
+			fmt.Print(len(res))
 			// fmt.Printf("\n(Iter %d) Sort the %d strings took %s\n", i+1, size, elapsed)
 		}
 
@@ -186,15 +196,16 @@ func sortTestForRationals() {
 			rArr := make([]Rationalizer, size)
 
 			for i := range rArr {
-				rArr[i] = makeRational(rand.Intn(size), rand.Intn(size)+1)
+				rArr[i] = makeRational(rand.Intn(20), rand.Intn(20)+1)
 			}
 
 			start := time.Now()
-			rationalSort(rArr)
+			res := rationalSort(rArr)
 			elapsed := time.Since(start)
 
 			sortTimeTotal += float64(elapsed)
 
+			fmt.Print(len(res))
 			// fmt.Printf("\n(Iter %d) Sort the %d rational numbers took %s\n", i+1, size, elapsed)
 		}
 
@@ -210,10 +221,10 @@ func testStrSortCorrectness() {
 	for _, s := range strArr {
 		fmt.Print(s)
 	}
-	strsSort(strArr)
+	res := strsSort(strArr)
 
 	fmt.Print("\n\n---- After Sort ----\n")
-	for _, s := range strArr {
+	for _, s := range res {
 		fmt.Print(s)
 	}
 }
@@ -222,16 +233,16 @@ func testRaionalSortCorrectness() {
 	rArr1 := make([]Rationalizer, 5)
 	fmt.Print("\n\n---- Before Sort ----\n")
 	for i := range rArr1 {
-		rArr1[i] = makeRational(rand.Intn(5), rand.Intn(5)+1)
+		rArr1[i] = makeRational(rand.Intn(5)*-1, rand.Intn(5)+1)
 		fmt.Print(rArr1[i])
 		fmt.Print(" ")
 		// fmt.Print(rArr1[i].toFloat64())
 		// fmt.Print(" ")
 	}
-	rationalSort(rArr1)
+	res := rationalSort(rArr1)
 
 	fmt.Print("\n\n---- After Sort ----\n")
-	for _, r := range rArr1 {
+	for _, r := range res {
 		fmt.Print(r)
 		fmt.Print(" ")
 		// fmt.Print(r.toFloat64())
@@ -245,16 +256,16 @@ func testRaionalSortCorrectness() {
 	rArr2[1] = r2
 	fmt.Print("\n\n---- Before Sort ----\n")
 	for i := 2; i < len(rArr2); i++ {
-		rArr2[i] = makeRational(rand.Intn(5)+10, rand.Intn(5)+1)
+		rArr2[i] = makeRational((rand.Intn(5)+10)*-1, rand.Intn(5)+1)
 		fmt.Print(rArr2[i])
 		fmt.Print(" ")
 		// fmt.Print(rArr2[i].toFloat64())
 		// fmt.Print(" ")
 	}
-	rationalSort(rArr2)
+	res = rationalSort(rArr2)
 
 	fmt.Print("\n\n---- After Sort ----\n")
-	for _, r := range rArr2 {
+	for _, r := range res {
 		fmt.Print(r)
 		fmt.Print(" ")
 		// fmt.Print(r.toFloat64())
