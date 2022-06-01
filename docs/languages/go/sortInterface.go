@@ -26,17 +26,17 @@ sorting slices of of built-in types.
 package main
 
 import (
-    "fmt"
-    "sort"
+	"fmt"
+	"sort"
 )
 
 type Person struct {
-    name string
-    age int
+	name string
+	age  int
 }
 
 func (p Person) String() string {
-    return fmt.Sprintf("{%v, %v}", p.name, p.age)
+	return fmt.Sprintf("{%v, %v}", p.name, p.age)
 }
 
 //
@@ -45,15 +45,15 @@ func (p Person) String() string {
 type ByName []Person
 
 func (p ByName) Len() int {
-    return len(p)
+	return len(p)
 }
 
 func (p ByName) Less(i, j int) bool {
-    return p[i].name < p[j].name
+	return p[i].name < p[j].name
 }
 
 func (p ByName) Swap(i, j int) {
-    p[i], p[j] = p[j], p[i]
+	p[i], p[j] = p[j], p[i]
 }
 
 //
@@ -62,27 +62,27 @@ func (p ByName) Swap(i, j int) {
 type ByAge []Person
 
 func (p ByAge) Len() int {
-    return len(p)
+	return len(p)
 }
 
 func (p ByAge) Less(i, j int) bool {
-    return p[i].age < p[j].age
+	return p[i].age < p[j].age
 }
 
 func (p ByAge) Swap(i, j int) {
-    p[i], p[j] = p[j], p[i]
+	p[i], p[j] = p[j], p[i]
 }
 
 func main() {
-    people := []Person{
-        Person{"Bob", 20}, Person{"Barb", 30}, Person{"Zia", 40},
-        Person{"Bob", 32}, Person{"Warren", 65}, Person{"Asa", 50},
-    }
-    fmt.Println("unsorted:", people)
-    
-    sort.Sort(ByName(people))
-    fmt.Println(" by name:", people)
+	people := []Person{
+		Person{"Bob", 20}, Person{"Barb", 30}, Person{"Zia", 40},
+		Person{"Bob", 32}, Person{"Warren", 65}, Person{"Asa", 50},
+	}
+	fmt.Println("unsorted:", people)
 
-    sort.Sort(ByAge(people))
-    fmt.Println("  by age:", people)
+	sort.Sort(ByName(people))
+	fmt.Println(" by name:", people)
+
+	sort.Sort(ByAge(people))
+	fmt.Println("  by age:", people)
 }
