@@ -2,6 +2,7 @@
 
 require "./MyRational.rb"
 require "./rSort.rb"
+require 'date'
 
 #
 # /* ------------ Test Part 1 Rational type ------------ */
@@ -43,6 +44,7 @@ def testRationalType1To5
   puts "Set r1's denominator to 5:\nr1 = #{r1}"
 
   #   ---- 4. Test pair ----
+  puts "Print pair arr: #{r1.pair}"
   r1_arr = r1.pair.map {|i| i}
   puts "Print pair: #{r1_arr[0]}/#{r1_arr[1]}"
 
@@ -196,8 +198,7 @@ end
 def testHarmonicSum
   # Test a very large number? like 1000?
   n = 1000
-  r = MyRational.new(1, 1)
-  puts "Harmonic sum from 1 to #{n} is #{r.get_harmonic_sum(n).to_lowest_terms}"
+  puts "Harmonic sum from 1 to #{n} is #{get_harmonic_sum(n).to_lowest_terms}"
 end
 
 # testRationalType1To5
@@ -206,7 +207,7 @@ end
 
 # testRationalType10To14
 
-# testHarmonicSum # 15. Harmonic Sum
+testHarmonicSum # 15. Harmonic Sum
 
 #
 # /* ------------ Test Part 2 Sort ------------ */
@@ -265,50 +266,106 @@ end
 
 # testSortSample
 
+def howRubyExpressTime
+    puts "Subseconds: #{Time.now.subsec*1000000.0}"
+    puts "time now: #{Time.now.to_f*1000000}" # microseconds
+    puts "current time:#{Time.now.to_f}; seconds: #{Time.now.sec.to_f}; microseconds: #{Time.now.usec.to_f}; nanoseconds: #{Time.now.nsec.to_f}"
+end
+
+# howRubyExpressTime
+
 def testNumsSort
-    # size = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
-    size = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-    time1 = Time.new
-    puts "Current Time : " + time1.inspect
-
-    # testSortSample
-
-    time2 = Time.new
-    puts "Current Time : " + time2.inspect
-
-    time_diff = time2.usec - time1.usec
-    puts "The time difference in microseconds: " + time_diff.inspect
-
+    size = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+    # size = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    log_time = File.open("ints_sort_time.txt", "w")
     size.each do |s|
         numsArr = []
         sortTimeTotal = 0
         # Loop 3 times to get an average sort time
         3.times do |t|
             s.times do |i|
-                numsArr[i] = rand(1000)
+                numsArr[i] = rand(s)
             end
 
-            time1 = Time.new
+            time1 = Time.now.to_f*1000000
             res = numsSort(numsArr)
-            time2 = Time.new
-            time_diff = time2.usec - time1.usec
-            puts "\n(Iter #{i+1}) Sort the #{s} integers took : #{time_diff.inspect}"
+            time2 = Time.now.to_f*1000000
+            time_diff = time2 - time1
+            sortTimeTotal += time_diff
+            puts "\n(Iter #{t+1}) Sort #{s} integers took : #{time_diff}"
         end
-        
+
         avg = sortTimeTotal / 3.0
-        puts "\nThe average time (in microseconds or µs) for sorting the #{s} integers took #{avg}\n"
+        puts "\nThe average time (in microseconds or µs) for sorting #{s} integers took #{avg}\n"
+        if log_time
+            log_time.puts "#{avg}\n"
+        end
     end
+    log_time.close
 end
 
 def testStrsSort
+    size = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+    # size = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    log_time = File.open("strings_sort_time.txt", "w")
+    size.each do |s|
+        strsArr = []
+        sortTimeTotal = 0
+        # Loop 3 times to get an average sort time
+        3.times do |t|
+            s.times do |i|
+                strsArr[i] = ('a'..'z').to_a.shuffle[0,5].join
+            end
+
+            time1 = Time.now.to_f*1000000
+            res = strsSort(strsArr)
+            time2 = Time.now.to_f*1000000
+            time_diff = time2 - time1
+            sortTimeTotal += time_diff
+            puts "\n(Iter #{t+1}) Sort #{s} strings took : #{time_diff}"
+        end
+
+        avg = sortTimeTotal / 3.0
+        puts "\nThe average time (in microseconds or µs) for sorting #{s} strings took #{avg}\n"
+        if log_time
+            log_time.puts "#{avg}\n"
+        end
+    end
+    log_time.close
 end
 
 def testRationalsSort
+    size = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+    # size = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    log_time = File.open("rationals_sort_time.txt", "w")
+    size.each do |s|
+        rsArr = []
+        sortTimeTotal = 0
+        # Loop 3 times to get an average sort time
+        3.times do |t|
+            s.times do |i|
+                rsArr[i] = MyRational.new(rand(20), rand(1..20))
+            end
+
+            time1 = Time.now.to_f*1000000
+            res = rationalsSort(rsArr)
+            time2 = Time.now.to_f*1000000
+            time_diff = time2 - time1
+            sortTimeTotal += time_diff
+            puts "\n(Iter #{t+1}) Sort #{s} strings took : #{time_diff}"
+        end
+
+        avg = sortTimeTotal / 3.0
+        puts "\nThe average time (in microseconds or µs) for sorting #{s} strings took #{avg}\n"
+        if log_time
+            log_time.puts "#{avg}\n"
+        end
+    end
+    log_time.close
 end
 
-testNumsSort
+# testNumsSort
 
-testStrsSort
+# testStrsSort
 
-testRationalsSort
+# testRationalsSort

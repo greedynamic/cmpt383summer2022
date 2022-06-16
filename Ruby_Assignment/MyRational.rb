@@ -126,49 +126,12 @@ class MyRational
       return MyRational.new(1, denominator/numerator) if denominator%numerator == 0
     
     # larger number / smaller number
-      g = getGcb(numerator, denominator)
-    #   puts "GCB: #{g}"
+      g = getGcd(numerator, denominator)
+      g2 = numerator.gcd(denominator)
+      g = g2 if g != g2
+    #   puts "GCD: #{g}"
       return MyRational.new(numerator/g, denominator/g) if g!= 0
       return self
-    end
-  
-    # // 15. Harmonic sum
-    def get_harmonic_sum(n)
-      raise 'The given rational should be greater than zero.' if n <= 0
-      return MyRational.new(1, 1) if n == 1
-  
-      resultD = factorialCal(1, n)
-        resultN = 0
-  
-      n.times do |i|
-        resultN += resultD / (i + 1)
-      end
-      return MyRational.new(resultN, resultD)
-    end
-  
-    def factorialCal(first, last)
-      if first == last
-        return first
-      end
-      mid = (first + last) / 2
-      return factorialCal(first, mid) * factorialCal(mid+1, last)
-    end
-  
-    def getGcb(nume, deno)
-      dividend = nume
-      divisor = deno
-      if nume < deno
-        dividend = deno
-        divisor = nume
-      end
-      q1 = dividend % divisor
-        q2 = divisor % q1
-        while q2 != 0 
-            curr_q2 = q2
-            q2 = q1 % q2
-            q1 = curr_q2
-      end
-        return q1
     end
   
     def isNegative
@@ -184,3 +147,42 @@ class MyRational
     end
   
   end # MyRational
+
+  # // 15. Harmonic sum
+  def get_harmonic_sum(n)
+    raise 'The given rational should be greater than zero.' if n <= 0
+    return MyRational.new(1, 1) if n == 1
+
+    resultD = factorialCal(1, n)
+      resultN = 0
+
+    n.times do |i|
+      resultN += resultD / (i + 1)
+    end
+    return MyRational.new(resultN, resultD)
+  end
+
+  def factorialCal(first, last)
+    if first == last
+      return first
+    end
+    mid = (first + last) / 2
+    return factorialCal(first, mid) * factorialCal(mid+1, last)
+  end
+
+  def getGcd(nume, deno)
+    dividend = nume
+    divisor = deno
+    if nume < deno
+      dividend = deno
+      divisor = nume
+    end
+    q1 = dividend % divisor
+      q2 = divisor % q1
+      while q2 != 0 
+          curr_q2 = q2
+          q2 = q1 % q2
+          q1 = curr_q2
+    end
+      return q1
+  end
