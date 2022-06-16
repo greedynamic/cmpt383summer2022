@@ -12,7 +12,6 @@ def numsSort(nums)
     return result
 end
 
-
 def strsSort(strs)
     result = strs.dup
     result.each_with_index do |s,i|
