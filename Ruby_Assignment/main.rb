@@ -207,72 +207,11 @@ end
 
 # testRationalType10To14
 
-testHarmonicSum # 15. Harmonic Sum
+# testHarmonicSum # 15. Harmonic Sum
 
 #
 # /* ------------ Test Part 2 Sort ------------ */
 #
-
-def testSortSample
-    def testNumsSortSample
-        numArr = [2,5,3,9,1,2]
-        puts "\nBefore sort: "
-        puts "#{numArr}"
-    
-        res = numsSort(numArr)
-        puts "\nAfter sort: "
-        puts "#{res}"
-    end
-    
-    def testStrsSortSample
-        strArr = ["hl", "zg", "he", "ac", "ab", "23", "He", "111"]
-        puts "\nBefore sort: "
-        puts "#{strArr}"
-        
-        res = strsSort(strArr)
-        puts "\nAfter sort: "
-        puts "#{res}"
-    end
-    
-    def testRationalsSortSample
-        r1 = MyRational.new(5, 8)
-        r2 = MyRational.new(-5, 8)
-        r3 = MyRational.new(-5, -8)
-        r4 = MyRational.new(5, -8)
-        r5 = MyRational.new(2, -3)
-        r6 = MyRational.new(0, 2)
-        r7 = MyRational.new(-2, 4)
-        r8 = MyRational.new(-4, 2)
-        r9 = MyRational.new(10, 64)
-        r10 = MyRational.new(63, 42)
-        r11 = MyRational.new(44, 66)
-        r12 = MyRational.new(42, 70)
-        rArr = [r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12]
-    
-        puts "\nBefore sort: "
-        rArr.each { |r| puts r.pair_s }
-        res = rationalsSort(rArr)
-    
-        puts "\nAfter sort: "
-        res.each { |r| puts r.to_lowest_terms.pair_s }
-    end
-    
-    testNumsSortSample
-    
-    testStrsSortSample
-    
-    testRationalsSortSample
-end
-
-# testSortSample
-
-def howRubyExpressTime
-    puts "Subseconds: #{Time.now.subsec*1000000.0}"
-    puts "time now: #{Time.now.to_f*1000000}" # microseconds
-    puts "current time:#{Time.now.to_f}; seconds: #{Time.now.sec.to_f}; microseconds: #{Time.now.usec.to_f}; nanoseconds: #{Time.now.nsec.to_f}"
-end
-
-# howRubyExpressTime
 
 def testNumsSort
     size = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]

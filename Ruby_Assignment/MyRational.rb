@@ -167,4 +167,4 @@ class MyRational
     mid = (first + last) / 2
     return factorialCal(first, mid) * factorialCal(mid+1, last)
   end
-  end
+end
