@@ -26,6 +26,10 @@ include Shape  # allows Shape methods to be called in Rectangle
     def perimeter
         2 * (@width + @height)
     end
+
+    def method_missing(m, *args, &block)
+        puts "Shape: no method named #{m}."
+    end
 end
 
 class Circle
@@ -54,3 +58,5 @@ shapes = [box, dot]
 shapes.each do |s|
     s.printShapeStats
 end
+
+box.print
