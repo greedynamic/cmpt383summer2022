@@ -61,8 +61,7 @@ implementation to help the marker understand your code.
     the case where the numerator or denominator is negative.
 
 15. **Harmonic sum** Given an integer $n > 0$, return a rational equal to $H_n
-    = \frac{1}{1} + \frac{1}{2} + \frac{1}{3} + \ldots + \frac{1}{n}$. Please
-    name the function `harmonicSum(n)` so it easy to find and run.
+    = \frac{1}{1} + \frac{1}{2} + \frac{1}{3} + \ldots + \frac{1}{n}$.
 
 
 ## General Notes
@@ -203,28 +202,106 @@ More details may be posted here closer to the assignment deadline.
 
 ## Racket-specific Notes
 
-Represent rationals using a **regular list and functions**. **Don't** use any
-special Racket data structures for this.
+- Use only regular Racket lists, and basic Racket functions as discussed in
+  the notes. **Don't** use any special Racket data structures, e.g. *don't*
+  use vectors, or structs, or hashes, .... It may be helpful to look at the
+  code in [point.rkt](point.rkt) for ideas.
 
-Racket has built-in support for rational numbers. **Don't** use them! Create
-your own original implementation of rationals that *doesn't* use the built-in
-rationals anywhere.
+- **Don't** use Racket's built-in rationals to represent or process your
+  rationals, except in `to-float`. Look up the Racket function
+  `exact->inexact`.
+
+- **Don't** use any mutating functions, like `set!`. Most mutating Racket
+  functions end with `!`, and so don't use any of those. Use just non-mutating
+  functions as shown in the notes and lectures.
+
+- Represent your rationals using lists. For example, you could represent
+  $\frac{3}{7}$ as `'(rational 3 7)`.
+
+- Racket has exceptions, and so please use `raise` when something goes wrong.
+  For example, `(raise "invalid denominator")` will raise an exception that
+  can be caught by other code.
+
+- For *part 1*, call your function `make-rational`. It should work if you pass
+  it one or two parameters. For example, `(make-rational 3 7)` returns a
+  rational representing $\frac{3}{7}$. `(make-rational 5)` returns a rational
+  representing $\frac{5}{1}$. To handle multiple parameters define your
+  function like this: `(define (make-rational . args) ... )`. `args` will then
+  be a list of the passed-in arguments.
+
+- For part 2 and 3, name the functions `r-numerator` and `r-denominator`
+  (Racket already has built-in functions called `numerator` and
+  `denominator`). For example, `(r-numerator (make-rational 3 7))` returns 3.
+
+- For part 4, call the function `num-denom`. It returns a list containing the
+  numerator and denominator, e.g. `(num-denom (make-rational 3 7))` returns
+  `'(3 7)`.
+
+- For part 5, call the function `to-string`. For example, `(to-string
+  (make-rational 3 7))` returns the string `"3/7"`.
+
+- For part 6, call the function `to-float`. For example, `(to-float
+  (make-rational 3 7))` returns `0.42857142857142855` in DrRacket. Look up the
+  Racket function `exact->inexact`.
+
+- For part 7, call the function `r=`.
+
+- For part 8, call the function `r<`. Be careful about with negative values!
+
+- For part 9, call the function `is-int?`.
+
+- For parts 10, 11, 12, and 13, call the functions `r+`, `r*`, `r/`, and
+  `invert`.
+
+- For part 14, call the function `to-lowest-terms`.
+
+- For part 15, call the function `harmonic-sum`.
+
+- You can time code (such as insertion sort) using [Racket's `(time ...)` form](https://docs.racket-lang.org/reference/time.html#%28form._%28%28lib._racket%2Fprivate%2Fmore-scheme..rkt%29._time%29%29), e.g.:
+
+  ```lisp
+  > (time (num-primes-less-than 10000))
+  cpu time: 1531 real time: 1528 gc time: 607
+  1229
+  ```
 
 More details may be posted here closer to the assignment deadline.
 
 
 ## Haskell-specific Notes
 
-Haskell has a standard `Rational` type. **Don't** use it in your
-implementation. Create your own original implementation of rationals in a
-typeclass called `MyRational` that doesn't use Haskell's `Rational` anywhere.
+- Download the file [rational.hs](haskell/rational.hs) and type your answers
+  there. The required functions, including their type signatures, are given in
+  comments.
+
+- **Don't** use Haskell's standard `Rational` type in your implementation.
+
+- **The error-handling rules are changed for this assignment**. When an error
+  occurs (such as division by zero), your code should call the `error "some
+  message"` function. This crashes the program with no way to recover, which
+  is clearly bad. However, we don't have enough time in this course to learn
+  Haskell's preferred way of handling errors (e.g. something like the `Maybe`
+  type).
+
+- **The marking scheme has been adjusted for this assignment**. The three
+  sections *number sorting*, *string sorting*, and *rational sorting* have
+  been **removed**. Only marks for the insertion sort implementation (that
+  sorts any list of values implementing `Ord`) will be given. So this
+  assignment is out of 27 (instead of 36).
+
+- For calculating timings, please a `main` function to the end of your
+  [rational.hs](haskell/rational.hs) file and call the sorting code there.
+  *Compile* this file, and time it using the command-line *time* command. See
+  [helloWorld.hs](haskell/helloWorld.hs) for an example of how to write
+  `main`, and how to compile.
 
 More details may be posted here closer to the assignment deadline.
 
 
 ## Prolog
 
-Prolog is quite different than the other languages in this course, and so an
-assignment more specific to Prolog will be put here when it's ready.
+Prolog is quite different than the other languages in this course, and so it's
+possible an assignment more specific to Prolog may be used instead of the
+rational numbers one.
 
 More details may be posted here closer to the assignment deadline.

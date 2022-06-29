@@ -342,10 +342,10 @@ variables that can only be accessed through functions.
 ## Composing Functions
 
 Another interesting feature of [Racket] is **composing** functions. Recall how
-function composition works in mathematics. If $f(x) = x^2$ and 
-$g(x) = 2x + 1$, the composition of $f$ and $g$ is 
-$f(g(x)) = g(x)^2 = (2x + 1)^2 = 4x^2 + 4x + 1$. This is denoted $f \circ g$, or 
-$f \circ g \;(x)= (2x + 1)^2 = 4x^2 + 4x + 1$.
+function composition works in mathematics. If $f(x) = x^2$ and $g(x) = 2x +
+1$, the composition of $f$ and $g$ is $f(g(x)) = g(x)^2 = (2x + 1)^2 = 4x^2 +
+4x + 1$. This is denoted $f \circ g$, or $f \circ g \;(x)= (2x + 1)^2 = 4x^2 +
+4x + 1$.
 
 In [Racket], we can compose functions directly by calling them:
 
@@ -713,9 +713,50 @@ Just like `(M M)`, this expression never returns a value and loops forever.
 There's no explicit loop or recursion here. It shows the non-obvious fact that
 you can create an infinite loop just from calling lambda functions.
 
+### The Y Combinator
+
+There is a variation of `M` called the **Y combinator** that can be used to
+implement recursion using only (unnamed) lambda functions. We won't go into
+the details here, but just provide it as an example:
+
+```
+(define Y 
+  (lambda (f)
+    ((lambda (x) (x x))
+     (lambda (x) (f (lambda (y) ((x x) y)))))))
+
+(define factorial-helper
+  (lambda (f)
+    (lambda (n)
+      (if (= n 0)
+          1
+          (* n (f (- n 1)))))))
+
+(define factorial (Y factorial-helper))
+
+(define fibonacci-helper
+  (lambda (f)
+    (lambda (n)
+      (cond ((= n 0) 0)
+            ((= n 1) 1)
+            (else (+ (f (- n 1)) (f (- n 2))))))))
+
+(define fibonacci (Y fibonacci-helper))
+```
+
+`Y` was made famous by [Haskell
+Curry](https://en.wikipedia.org/wiki/Haskell_Curry) in his work on
+[combinatory logic](https://en.wikipedia.org/wiki/Combinatory_logic) in the
+middle of the 1900s. If you're interested in more information about `Y` and
+related ideas, a good starting point is the [Wikipedia page on fixed-point
+combinators](https://en.wikipedia.org/wiki/Fixed-point_combinator), or [this
+blog post](https://mvanier.livejournal.com/2897.html)
+
 
 ### The K Combinator
-The function `(K x)` returns a function that takes a single input `y`, and for any value of `y` returns `x`. In other words, it returns a *constant* function that always returns `x`:
+The function `(K x)` returns a function that takes a single input `y`, and for
+any value of `y` returns `x`. In other words, it returns a *constant* function
+that always returns `x`:
 
 ```scheme
 (define (K x) (lambda (y) x))
@@ -738,6 +779,7 @@ Function `S3` takes 3 inputs:
 
 Intuitively, you can think of `S` as a generalization of regular function
 calling: `S` calls `x` on `y`, but *first* it calls `x` on `z` and `y` on `z`.
+
 
 ### I in Terms of S and K
 
@@ -765,6 +807,15 @@ re-write the lambda function for `(S K K)` as:
 
 This is the identity function: it returns unchanged whatever you pass it.
 
+
+### M in Terms of S and K
+
+The `M` combinator can be defined like this:
+
+```scheme
+(define (M x) 
+    (S I I x))
+```
 
 ### Completeness of S and K
 
