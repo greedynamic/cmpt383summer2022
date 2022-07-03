@@ -111,6 +111,11 @@
 
 
 ;;
+;; ------------ Part 2 Insertion Sort ------------ 
+;;
+
+
+;;
 ;; Insertion sort
 ;;
 
