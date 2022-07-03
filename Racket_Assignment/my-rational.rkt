@@ -151,15 +151,6 @@
 ; Benchmark
 ;
 
-#; (define size '(1000 2000 3000 4000 5000 6000 7000 8000 9000 10000))
-
-#;(define (ave-time-list lst cmp cycles)
-  (if (zero? cycles)
-      (list)
-      (cons (sortTime (current-inexact-milliseconds) lst cmp) (ave-sortTime lst cmp (- cycles 1)))
-    )
-  )
-
 (define (ave-sortTime lst cmp cycles)
   (if (zero? cycles)
       0
