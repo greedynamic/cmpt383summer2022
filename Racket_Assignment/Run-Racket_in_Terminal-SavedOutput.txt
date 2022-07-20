@@ -1,0 +1,35 @@
+Last login: Fri Jul  1 15:54:54 on ttys001
+HaochendeMBP:~ haochenyang$ ls
+AndroidStudioProjects	Downloads		Music			go
+Applications		Library			Pictures		node_modules
+Desktop			Lightworks		Public			package-lock.json
+Documents		Movies			eclipse			package.json
+HaochendeMBP:~ haochenyang$ ls
+AndroidStudioProjects	Downloads		Music			go
+Applications		Library			Pictures		node_modules
+Desktop			Lightworks		Public			package-lock.json
+Documents		Movies			eclipse			package.json
+HaochendeMBP:~ haochenyang$ cd Downloads/
+HaochendeMBP:Downloads haochenyang$ /Applications/Racket\ v8.5/bin/racket my-rational.rkt
+HaochendeMBP:Downloads haochenyang$ /Applications/Racket\ v8.5/bin/racket my-rational.rkt
+'(6 2 1 5 4)
+HaochendeMBP:Downloads haochenyang$ /Applications/Racket\ v8.5/bin/racket my-rational.rkt
+'(6 2 1 5 4)
+'((my-rational 0 9) (my-rational 1 9) (my-rational 2 9) (my-rational 3 9) (my-rational 4 9) (my-rational 5 9) (my-rational 6 9))
+HaochendeMBP:Downloads haochenyang$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
