@@ -133,7 +133,12 @@ toLowestTerms (Frac n d) = (makeRational (div n (gcd (abs n) (abs d))) (div d (g
 -- 34052522467/8923714800
 --
 harmonicSum :: Integer -> MyRational
--- ...
+harmonicSum n =  calcHarmonicSum [1 .. n]
+
+calcHarmonicSum :: [Integer] -> MyRational
+calcHarmonicSum [] = makeRational 0 1
+calcHarmonicSum (x:xs) = add (makeRational 1 x) (toLowestTerms (calcHarmonicSum xs))
+
 
 --
 -- Using insertion sort, list any list of values [a] for a type that
