@@ -1,4 +1,6 @@
 import System.Random (randomRIO)
+import Control.Monad (replicateM)
+
 data MyRational = Frac Integer Integer
 
 makeRational :: Integer -> Integer -> MyRational
@@ -66,7 +68,7 @@ insertionSort (x:xs) = insert x (insertionSort xs)
 
 randomList :: Int -> IO([Int])
 randomList 0 = return []
-randomList n = do r  <- randomRIO (1,5)
+randomList n = do r  <- randomRIO (1,10000)
                   rs <- randomList (n-1)
                   return (r:rs) 
 
@@ -77,6 +79,18 @@ randomListPairs n = do a <- randomRIO (1,10000)
                        ps <- randomListPairs (n-1)
                        return ((a,b):ps) 
 
+randomString :: Int -> IO String
+randomString size = replicateM size $ randomRIO ('a', 'z')
+
+randomStringList :: Int -> IO([String])
+randomStringList 0 = return []
+randomStringList n = do r <- randomString 10
+                        rs <- randomStringList (n-1)
+                        return (r:rs)
+
+randomRationalList :: [(Int,Int)] -> [MyRational]
+randomRationalList []           = []
+randomRationalList ((n,d):rest) = ((makeRational (toInteger n) (toInteger d)):(randomRationalList rest))
 
 main =  do
 let x = makeRational 1 3
@@ -115,3 +129,5 @@ putStrLn ""
 putStrLn "Here's a list of 5 random numbers:"
 lst <- randomList 5
 putStrLn (show lst)
+
+
