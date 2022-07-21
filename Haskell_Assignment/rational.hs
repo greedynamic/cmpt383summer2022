@@ -22,25 +22,26 @@ data MyRational = Frac Integer Integer
 -- "makeRational: denominator can't be 0"
 --
 makeRational :: Integer -> Integer -> MyRational
--- ...
+makeRational n d | d == 0    = error "Denominator cannot be zero."
+                 | otherwise = Frac n d
 
 --
 -- Returns the numerator of a rational.
 --
 getNum :: MyRational -> Integer
--- ...
+getNum (Frac n d) = n
 
 --
 -- Returns the denominator of a rational.
 --
 getDenom :: MyRational -> Integer
--- ...
+getDenom (Frac n d) = d
 
 --
 -- Returns a pair of the numerator and denominator of a MyRational.
 --
 pair :: MyRational -> (Integer, Integer)
--- ...
+pair (Frac n d) = (n, d)
 
 --
 -- Implement an instance of the show function that returns the usual string
@@ -48,7 +49,7 @@ pair :: MyRational -> (Integer, Integer)
 -- "5/3".
 --
 instance Show MyRational where
--- ...
+  show (Frac n d) = show n ++ "/" ++ show d
 
 --
 -- Convert the fraction to a floating point value Returns the value as the
@@ -56,14 +57,15 @@ instance Show MyRational where
 -- etc. Hint: use fromIntegral.
 --
 toFloat :: MyRational -> Float
--- ...
+toFloat (Frac n d) = (fromIntegral n) / (fromIntegral d)
 
 --
 -- Implement an instance of == that test if two MyRationals are equal. Be
 -- careful if either is not in lowest terms!
 --
 instance Eq MyRational where
--- ...
+  (Frac n1 d1) == (Frac n2 d2) | n1*d2 == n2*d1   = True
+                               | otherwise        = False
 
 --
 -- Implement an instance of compare x y that tests if the MyRationals x and y
@@ -72,34 +74,36 @@ instance Eq MyRational where
 -- in lowest terms!
 --
 instance Ord MyRational where
--- ...
+  compare (Frac n1 d1) (Frac n2 d2) = compare (n1*d2) (n2*d1)
 
 --
 -- Return True if the given MyRational represents an integer, and False
 -- otherwise. For example, 4/1, 21/3, and 0/99 are all integers.
 --
 isInt :: MyRational -> Bool
--- ...
+isInt (Frac n d) | n%d == 0   = True
+                 | otherwise  = False
 
 --
 -- Adds two given MyRationals and returns a new MyRational that is there sum.
 --
 add :: MyRational -> MyRational -> MyRational
--- ...
+add (Frac n1 d1) (Frac n2 d2) = (makeRational (n1*d2+n2*d1) (d1*d2))
 
 --
 -- Multiplies two given MyRationals and returns a new MyRational that is there
 -- product.
 --
 mult :: MyRational -> MyRational -> MyRational
--- ...
+mult (Frac n1 d1) (Frac n2 d2) = (makeRational (n1*n2) (d1*d2))
 
 --
 -- Divides two given MyRationals and returns a new MyRational that is there
 -- quotient. Call the error function if division by zero would occur.
 --
 divide :: MyRational -> MyRational -> MyRational
--- ...
+divide (Frac n1 d1) (Frac n2 d2) | n2 == 0 = error "Two given rationals cannot be divided."
+                                 | otherwise = (makeRational (n1*d2) (d1*n2))
 
 --
 -- Inverts a given MyRational and returns a new one with the numerator and
@@ -108,7 +112,8 @@ divide :: MyRational -> MyRational -> MyRational
 -- rational.
 --
 invert :: MyRational -> MyRational
--- ...
+invert (Frac n d) | d == 0 = error "The given rational cannot be inverted."
+                  | otherwise = (makeRational d n)
 
 --
 -- Reduces a given MyRational and returns a new MyRational that is in lowest
@@ -117,7 +122,7 @@ invert :: MyRational -> MyRational
 -- negative.
 --
 toLowestTerms :: MyRational -> MyRational
--- ...
+toLowestTerms (Frac n d) = (makeRational (div n (gcd (abs n) (abs d))) (div d (gcd (abs n) (abs d))))
 
 --
 -- Given an integer, return a rational equal to 1/1 + 1/2 + ... + 1/n.
@@ -146,8 +151,14 @@ harmonicSum :: Integer -> MyRational
 --                  makeRational 4 5,makeRational (-1) 7]
 -- [-1/7,0/1,4/5,2/2]
 --
+insert :: Ord a => a -> [a] -> [a]
+insert x [] = [x]
+insert x (y:ys) | x <= y    = x:y:ys
+                | otherwise = y : (insert x ys)
+
 insertionSort :: Ord a => [a] -> [a]
--- ...
+isort []     = []
+isort (x:xs) = insert x (isort xs)
 
 --
 -- When you're ready to test insertionSort, put a main function here that
